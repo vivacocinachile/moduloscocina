@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { background: #E8ECEC; color: #14232B; }
+
+.dr { display: block; width: 100%; height: auto; }
+.dr-body { fill: #DDE3E2; stroke: #14232B; stroke-width: 1.2; }
+.dr-body-line { fill: none; stroke: #14232B; stroke-width: 1.2; }
+.dr-door { fill: #F7F8F6; stroke: #14232B; stroke-width: 1.2; }
+.dr-zoc { fill: #3A4A52; stroke: #14232B; stroke-width: 1; }
+.dr-niche { fill: #2A3439; stroke: #14232B; stroke-width: 1.2; }
+.dr-pan { fill: #B7C3C6; stroke: #14232B; stroke-width: 1; }
+.dr-nt { fill: #DDE6E8; }
+.dr-h { stroke: #14232B; stroke-width: 3; stroke-linecap: round; }
+.dr-open { stroke: #14232B; stroke-width: .8; stroke-dasharray: 6 5; fill: none; opacity: .7; }
+.dr-dim line { stroke: #0B5C6B; stroke-width: 1; }
+.dr-dim text { fill: #0B5C6B; }
