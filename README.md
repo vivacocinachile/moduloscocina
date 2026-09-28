@@ -11,12 +11,29 @@ igual que Arrendia.
   ficha de cada módulo con dibujo frontal, corte lateral, despiece, herrajes y costo.
 - Cliente de Supabase listo (`lib/supabase.ts`), aún sin conectar a ninguna pantalla.
 
+## Etapa 2 (agregada)
+- `lib/rules.ts`: motor de reglas y generador de propuestas, portado del HTML.
+  Cuatro tipos de cocina (lineal, L, paralela, U) × 3 estrategias, probado a mano
+  con 24 combinaciones (los 4 tipos × H70/H80 × las 3 estrategias): todas calzan
+  exactamente en cada muro.
+- `/recinto`: formulario de recinto (tipo, largos de muro, altura de bajos,
+  lavaplatos, refrigerador, aéreos) + tarjetas de propuesta (vista previa del
+  muro, módulos, ml de bajos y de aéreos, precio neto/IVA/total).
+- "Usar esta propuesta" guarda la cocina en `vc_cocinas` de Supabase si hay
+  sesión iniciada (todavía no hay pantalla de login — próxima etapa).
+- Las reglas están fijas en código por ahora (no hay pantalla "Reglas de diseño"
+  para editarlas todavía).
+
 ## Qué falta (próximas etapas)
+- Login / registro (Supabase Auth) y el editor `/cocina/[id]` (planta, elevaciones,
+  arrastrar y soltar, mecanizado) — hoy "Usar esta propuesta" guarda en Supabase
+  pero no hay pantalla para abrir y seguir editando esa cocina.
+- Pantalla para editar las reglas de diseño (hoy están fijas en `lib/rules.ts`).
 - Módulos propios (Diseñar módulos), catálogo de materiales y tapacanto con precios propios.
-- El editor de planta y elevaciones (arrastrar y soltar, mecanizado, reglas de diseño).
-- Guardar cocinas y usuarios en Supabase (las tablas ya existen, solo falta conectar las pantallas).
 - Los dibujos (`lib/drawing.ts`) siguen generando un string SVG como el HTML original,
   en vez de JSX puro — funciona bien, pero conviene reescribirlo más adelante.
+- La vista previa del muro en las tarjetas de propuesta es una barra proporcional,
+  no la planta 2D con esquinas/puertas que tiene el HTML — llega con el editor.
 
 ## Cómo subirlo (mismo flujo que Arrendia)
 1. Sube esta carpeta completa a un repo de GitHub (usa el editor web o "Add file → Upload files",
