@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { RULES, STRATS, propose, Propuesta, Entrada } from '@/lib/rules';
 import { ProposalCard } from '@/components/ProposalCard';
 import { supabase } from '@/lib/supabase';
+import { AuthBar } from '@/components/AuthBar';
+import { useRouter } from 'next/navigation';
 
 const tipos = Object.keys(RULES);
 
@@ -11,6 +13,7 @@ export default function RecintoPage() {
   const [props, setProps] = useState<{ nombre: string; desc: string; p: Propuesta }[]>([]);
   const [err, setErr] = useState('');
   const [saved, setSaved] = useState('');
+  const router = useRouter();
 
   const muros = RULES[g.tipo].muros;
 
@@ -38,13 +41,14 @@ export default function RecintoPage() {
     };
     const r = await supabase.from('vc_cocinas').insert(row).select('id').single();
     if (r.error) setSaved('No se pudo guardar: ' + r.error.message);
-    else setSaved(`Guardada. El editor (etapa 3) abrirá /cocina/${r.data.id} — todavía no está listo.`);
+    else router.push(`/cocina/${r.data.id}`);
   }
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-10 bg-panel border-b border-line px-4 py-2">
+      <header className="sticky top-0 z-10 bg-panel border-b border-line px-4 py-2 flex items-center gap-4 flex-wrap">
         <h1 className="font-cond text-lg">Recinto y propuestas</h1>
+        <div className="ml-auto"><AuthBar /></div>
       </header>
       <div className="max-w-4xl mx-auto p-4">
         <section className="border border-line rounded-md bg-panel p-4">

@@ -24,16 +24,26 @@ igual que Arrendia.
 - Las reglas están fijas en código por ahora (no hay pantalla "Reglas de diseño"
   para editarlas todavía).
 
+## Etapa 3 (agregada)
+- `components/AuthBar.tsx` + `lib/useSession.ts`: iniciar sesión, crear cuenta y
+  cerrar sesión con Supabase Auth, visible en `/recinto` y en el editor.
+- `/cocina/[id]`: abre una cocina guardada, muestra sus muros con los módulos
+  reales (código, ancho, precio), permite cambiar el módulo de cada casillero
+  (selector agrupado en Bajos/Torres), quitar módulos, agregar uno nuevo,
+  y recalcula los totales (módulos, ml de bajos, ml de aéreos, neto, IVA) al vuelo.
+  "Guardar" actualiza la fila en `vc_cocinas`; "Eliminar" la borra y vuelve a `/recinto`.
+- "Usar esta propuesta" en `/recinto` ahora guarda la cocina y te lleva directo
+  a `/cocina/[id]` para seguir editándola.
+
 ## Qué falta (próximas etapas)
-- Login / registro (Supabase Auth) y el editor `/cocina/[id]` (planta, elevaciones,
-  arrastrar y soltar, mecanizado) — hoy "Usar esta propuesta" guarda en Supabase
-  pero no hay pantalla para abrir y seguir editando esa cocina.
 - Pantalla para editar las reglas de diseño (hoy están fijas en `lib/rules.ts`).
 - Módulos propios (Diseñar módulos), catálogo de materiales y tapacanto con precios propios.
+- Mecanizado, catálogo imprimible, artefactos de cocina, recinto (medidas/puertas/ventanas).
 - Los dibujos (`lib/drawing.ts`) siguen generando un string SVG como el HTML original,
   en vez de JSX puro — funciona bien, pero conviene reescribirlo más adelante.
-- La vista previa del muro en las tarjetas de propuesta es una barra proporcional,
-  no la planta 2D con esquinas/puertas que tiene el HTML — llega con el editor.
+- La vista previa del muro (en las tarjetas de propuesta) es una barra proporcional,
+  no la planta 2D con esquinas/puertas del HTML — la planta real es del editor de dibujo,
+  que dijimos dejar para más adelante.
 
 ## Cómo subirlo (mismo flujo que Arrendia)
 1. Sube esta carpeta completa a un repo de GitHub (usa el editor web o "Add file → Upload files",
