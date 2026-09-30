@@ -21,14 +21,20 @@ export function AuthBar() {
     );
   }
 
+  function valid() {
+    if (!email.trim() || !pw.trim()) { setMsg('Escribe tu correo y una clave.'); return false; }
+    return true;
+  }
   async function login() {
+    if (!valid()) return;
     setMsg('');
-    const r = await supabase!.auth.signInWithPassword({ email, password: pw });
+    const r = await supabase!.auth.signInWithPassword({ email: email.trim(), password: pw });
     if (r.error) setMsg('Credenciales inválidas: ' + r.error.message);
   }
   async function signup() {
+    if (!valid()) return;
     setMsg('');
-    const r = await supabase!.auth.signUp({ email, password: pw });
+    const r = await supabase!.auth.signUp({ email: email.trim(), password: pw });
     if (r.error) setMsg('Error al crear la cuenta: ' + r.error.message);
     else if (!r.data.session) setMsg('Revisa tu correo para confirmar la cuenta.');
   }

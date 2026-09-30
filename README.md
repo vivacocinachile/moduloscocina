@@ -35,8 +35,22 @@ igual que Arrendia.
 - "Usar esta propuesta" en `/recinto` ahora guarda la cocina y te lleva directo
   a `/cocina/[id]` para seguir editándola.
 
+## Etapa 4 (agregada)
+- `/reglas`: pantalla para editar las reglas de diseño (antes fijas en código).
+  Por tipo de cocina (lineal, L, paralela, U): editar nombre, agregar/quitar muros
+  (pared, si descuenta profundidad de esquina), y por muro agregar/quitar/editar
+  elementos (módulo obligatorio u opcional con su ancho preferido, hueco de
+  refrigerador, o zona libre con peso relativo). Duplicar un tipo como uno nuevo,
+  eliminar un tipo, restablecer los valores de fábrica.
+- Las reglas se guardan en `vc_config.reglas` (misma tabla y columna que ya usa
+  el HTML) — si tienes cuenta, tus reglas guardadas ahí ya se leerán aquí también.
+  Sin sesión, se usan y se pueden probar las reglas de fábrica, sin guardar.
+- `/recinto` ahora usa las reglas guardadas del usuario (o las de fábrica si no
+  hay sesión o no ha guardado ninguna) en vez de las reglas fijas de antes.
+- Corregido: crear cuenta/iniciar sesión ya no llama a Supabase si dejaste el
+  correo o la clave vacíos (evita el error "anonymous sign-ins are disabled").
+
 ## Qué falta (próximas etapas)
-- Pantalla para editar las reglas de diseño (hoy están fijas en `lib/rules.ts`).
 - Módulos propios (Diseñar módulos), catálogo de materiales y tapacanto con precios propios.
 - Mecanizado, catálogo imprimible, artefactos de cocina, recinto (medidas/puertas/ventanas).
 - Los dibujos (`lib/drawing.ts`) siguen generando un string SVG como el HTML original,

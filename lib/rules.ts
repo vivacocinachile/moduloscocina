@@ -25,7 +25,7 @@ const LIN_A: RuleItem[] = [
   { k: 'FILL', peso: 30 },
 ];
 
-export const RULES: Record<string, RuleType> = {
+export const RULES_DEFAULT: Record<string, RuleType> = {
   lineal: { nombre: 'Lineal (cocina larga)', muros: [{ nombre: 'Muro A', desc: 0, pared: 'N', items: LIN_A }] },
   L: {
     nombre: 'En L',
@@ -125,8 +125,8 @@ export interface Run { label: string; length: number; slots: Slot[]; wall: 'N' |
 export interface Propuesta { runs: Run[]; variant: string; notas: string[] }
 export interface Entrada { tipo: string; L: number[]; v: string; lav: number; ref: number; aereos: boolean }
 
-export function propose(g: Entrada, st: Strat): Propuesta | { error: string } {
-  const tipo = RULES[g.tipo];
+export function propose(rules: Record<string, RuleType>, g: Entrada, st: Strat): Propuesta | { error: string } {
+  const tipo = rules[g.tipo];
   if (!tipo) return { error: 'No encuentro el tipo de cocina elegido.' };
   const v = g.v, D = CFG.prof.base, notas: string[] = [], runs: Run[] = [];
   let alt = 0;

@@ -1,28 +1,33 @@
 'use client';
-import { useState } from 'react';
-import { RULES, STRATS, propose, Propuesta, Entrada } from '@/lib/rules';
+import { useEffect, useState } from 'react';
+import { STRATS, propose, Propuesta, Entrada } from '@/lib/rules';
+import { useReglas } from '@/lib/useReglas';
+import Link from 'next/link';
 import { ProposalCard } from '@/components/ProposalCard';
 import { supabase } from '@/lib/supabase';
 import { AuthBar } from '@/components/AuthBar';
 import { useRouter } from 'next/navigation';
 
-const tipos = Object.keys(RULES);
+
 
 export default function RecintoPage() {
+  const { rules, loaded } = useReglas();
   const [g, setG] = useState<Entrada>({ tipo: 'lineal', L: [3200, 2400, 2400], v: 'H70', lav: 600, ref: 0, aereos: true });
   const [props, setProps] = useState<{ nombre: string; desc: string; p: Propuesta }[]>([]);
   const [err, setErr] = useState('');
   const [saved, setSaved] = useState('');
   const router = useRouter();
 
-  const muros = RULES[g.tipo].muros;
+  const tipos = Object.keys(rules);
+  const muros = rules[g.tipo]?.muros || [];
+  useEffect(() => { if (!rules[g.tipo] && tipos[0]) setG((old) => ({ ...old, tipo: tipos[0] })); }, [rules]);
 
   function generar() {
     setErr(''); setSaved('');
     const out: { nombre: string; desc: string; p: Propuesta }[] = [];
     let firstError = '';
     for (const st of STRATS) {
-      const r = propose(g, st);
+      const r = propose(rules, g, st);
       if ('error' in r) { if (!firstError) firstError = r.error; continue; }
       out.push({ nombre: st.nombre, desc: st.desc, p: r });
     }
@@ -36,7 +41,7 @@ export default function RecintoPage() {
     if (!session.session) { setSaved('Inicia sesión para guardar esta propuesta como cocina.'); return; }
     const row = {
       user_id: session.session.user.id,
-      nombre: 'Cocina ' + RULES[g.tipo].nombre,
+      nombre: 'Cocina ' + rules[g.tipo].nombre,
       data: { variant: p.variant, ivaOn: true, runs: p.runs },
     };
     const r = await supabase.from('vc_cocinas').insert(row).select('id').single();
@@ -48,16 +53,18 @@ export default function RecintoPage() {
     <div className="min-h-screen">
       <header className="sticky top-0 z-10 bg-panel border-b border-line px-4 py-2 flex items-center gap-4 flex-wrap">
         <h1 className="font-cond text-lg">Recinto y propuestas</h1>
+        <Link href="/reglas" className="text-sm underline">Reglas de diseño</Link>
         <div className="ml-auto"><AuthBar /></div>
       </header>
       <div className="max-w-4xl mx-auto p-4">
+        {!loaded && <p className="text-sm text-ink2 mb-2">Cargando reglas…</p>}
         <section className="border border-line rounded-md bg-panel p-4">
           <h2 className="font-cond text-xl mb-2">1. Recinto</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <label className="flex flex-col gap-1 text-sm text-ink2">
               Tipo de cocina
               <select className="border border-line rounded-md px-2 py-1 bg-panel" value={g.tipo} onChange={(e) => setG({ ...g, tipo: e.target.value })}>
-                {tipos.map((t) => <option key={t} value={t}>{RULES[t].nombre}</option>)}
+                {tipos.map((t) => <option key={t} value={t}>{rules[t].nombre}</option>)}
               </select>
             </label>
             {muros.map((m, i) => (
