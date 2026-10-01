@@ -7,11 +7,11 @@ import { CFG, Modulo, FrontEl } from './modules';
 
 const fmtI = (n: number) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-function dimH(x1: number, x2: number, y: number, label: string, fs: number) {
+export function dimH(x1: number, x2: number, y: number, label: string, fs: number) {
   const mx = (x1 + x2) / 2;
   return `<g class="dr-dim"><line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}"/><line x1="${x1}" y1="${y - fs * 0.35}" x2="${x1}" y2="${y + fs * 0.35}"/><line x1="${x2}" y1="${y - fs * 0.35}" x2="${x2}" y2="${y + fs * 0.35}"/><text x="${mx}" y="${y + fs * 1.15}" text-anchor="middle" font-size="${fs}">${label}</text></g>`;
 }
-function dimV(x: number, y1: number, y2: number, label: string, fs: number) {
+export function dimV(x: number, y1: number, y2: number, label: string, fs: number) {
   const my = (y1 + y2) / 2;
   return `<g class="dr-dim"><line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}"/><line x1="${x - fs * 0.35}" y1="${y1}" x2="${x + fs * 0.35}" y2="${y1}"/><line x1="${x - fs * 0.35}" y1="${y2}" x2="${x + fs * 0.35}" y2="${y2}"/><text transform="translate(${x - fs * 0.45},${my}) rotate(-90)" text-anchor="middle" font-size="${fs}">${label}</text></g>`;
 }

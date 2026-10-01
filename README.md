@@ -50,14 +50,26 @@ igual que Arrendia.
 - Corregido: crear cuenta/iniciar sesión ya no llama a Supabase si dejaste el
   correo o la clave vacíos (evita el error "anonymous sign-ins are disabled").
 
+## Etapa 5 (agregada)
+- `lib/plan.ts`: geometría real de la planta, portada del HTML (posición de cada
+  módulo según el muro, puertas/ventanas, símbolos de lavaplatos y cocción).
+- `components/PlanEditor.tsx`: planta 2D de verdad en `/cocina/[id]`, con los
+  muros, el refrigerador, los aéreos (en línea punteada) y las cotas del
+  recinto. **Editable**: tocas un módulo para seleccionarlo (se sincroniza con
+  la tabla de abajo), y lo arrastras para moverlo dentro del mismo muro o a
+  otro muro — se reacomoda solo y respeta el orden de los demás.
+- Probado con las 4 tipologías (lineal, L, paralela, U) renderizando con datos
+  reales antes de entregarlo.
+
 ## Qué falta (próximas etapas)
+- Puertas y ventanas editables (hoy la planta pone una puerta por defecto, fija).
+- Girar un módulo (cambiarlo de muro ya funciona; girarlo en el mismo lugar, no todavía).
+- Reemplazar la vista previa de la tarjeta de propuesta (en `/recinto`) por esta
+  misma planta real, en miniatura y sin edición.
 - Módulos propios (Diseñar módulos), catálogo de materiales y tapacanto con precios propios.
-- Mecanizado, catálogo imprimible, artefactos de cocina, recinto (medidas/puertas/ventanas).
+- Mecanizado, catálogo imprimible, artefactos de cocina.
 - Los dibujos (`lib/drawing.ts`) siguen generando un string SVG como el HTML original,
   en vez de JSX puro — funciona bien, pero conviene reescribirlo más adelante.
-- La vista previa del muro (en las tarjetas de propuesta) es una barra proporcional,
-  no la planta 2D con esquinas/puertas del HTML — la planta real es del editor de dibujo,
-  que dijimos dejar para más adelante.
 
 ## Cómo subirlo (mismo flujo que Arrendia)
 1. Sube esta carpeta completa a un repo de GitHub (usa el editor web o "Add file → Upload files",

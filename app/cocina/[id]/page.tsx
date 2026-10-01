@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import { useSession } from '@/lib/useSession';
 import { AuthBar } from '@/components/AuthBar';
 import { WallEditor } from '@/components/WallEditor';
+import { PlanEditor } from '@/components/PlanEditor';
 import { Run, kitchenTotals, fmt$ } from '@/lib/rules';
 
 interface KitchenData { variant: string; ivaOn: boolean; runs: Run[] }
@@ -17,6 +18,8 @@ export default function CocinaPage() {
   const [data, setData] = useState<KitchenData | null>(null);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
+  const [sel, setSel] = useState<{ ri: number; si: number } | null>(null);
+  const [showAereos, setShowAereos] = useState(true);
 
   useEffect(() => {
     if (!ready) return;
@@ -69,6 +72,23 @@ export default function CocinaPage() {
               <button onClick={guardar} className="bg-accent text-white rounded-md px-4 py-2 text-sm">Guardar</button>
               <button onClick={eliminar} className="border border-line rounded-md px-3 py-2 text-sm text-red-700">Eliminar</button>
             </div>
+            <div className="border border-line rounded-md bg-panel p-3 mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="font-cond text-lg">Planta</h2>
+                <label className="text-xs flex items-center gap-1">
+                  <input type="checkbox" checked={showAereos} onChange={(e) => setShowAereos(e.target.checked)} />
+                  Aéreos
+                </label>
+              </div>
+              <PlanEditor
+                runs={data.runs}
+                onChange={(runs) => setData({ ...data, runs })}
+                selected={sel}
+                onSelect={setSel}
+                showAereos={showAereos}
+              />
+              <p className="text-xs text-ink2 mt-1">Arrastra un módulo para moverlo dentro del muro o a otro muro. Toca uno para seleccionarlo.</p>
+            </div>
             {t && (
               <dl className="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm mb-4 border border-line rounded-md bg-panel p-3">
                 <div><span className="text-ink2 block text-xs">Módulos</span><b>{t.n}</b></div>
@@ -83,6 +103,12 @@ export default function CocinaPage() {
                 <WallEditor key={i} run={r} variant={data.variant} onChange={(run) => updateRun(i, run)} />
               ))}
             </div>
+            {sel && data.runs[sel.ri]?.slots[sel.si] && (
+              <div className="mt-2 text-xs text-ink2">
+                Seleccionado: muro {sel.ri + 1}, posición {sel.si + 1} — {data.runs[sel.ri].slots[sel.si].b}
+                <button className="ml-2 underline" onClick={() => setSel(null)}>Soltar</button>
+              </div>
+            )}
           </>
         )}
       </div>

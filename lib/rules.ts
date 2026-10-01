@@ -121,7 +121,7 @@ function combos(lists: number[][], cap: number) {
 }
 
 export interface Slot { b: string; a: string | null }
-export interface Run { label: string; length: number; slots: Slot[]; wall: 'N' | 'S' | 'O' | 'E' }
+export interface Run { label: string; length: number; slots: Slot[]; wall: 'N' | 'S' | 'O' | 'E'; off?: number }
 export interface Propuesta { runs: Run[]; variant: string; notas: string[] }
 export interface Entrada { tipo: string; L: number[]; v: string; lav: number; ref: number; aereos: boolean }
 
